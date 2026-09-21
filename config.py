@@ -15,11 +15,11 @@ ZONES = {
 }
 ON_VERCEL = os.getenv("VERCEL") == "1"
 DB_PATH = os.getenv("DB_PATH", "/tmp/noise.db" if ON_VERCEL else str(Path(__file__).with_name("noise.db")))
-PORT = int(os.getenv("PORT", "7860"))
+PORT = int(os.getenv("PORT") or "7860")
 SIM = os.getenv("SIM", "0" if ON_VERCEL else "1") == "1"
 AUTO_AGENT = os.getenv("AUTO_AGENT", "0" if ON_VERCEL else "1") == "1"
-AGENT_INTERVAL = int(os.getenv("AGENT_INTERVAL", "60"))
-CAL_OFFSET = float(os.getenv("CAL_OFFSET", "94"))
+AGENT_INTERVAL = int(os.getenv("AGENT_INTERVAL") or "60")
+CAL_OFFSET = float(os.getenv("CAL_OFFSET") or "94")
 
 
 def zone_limit(zone, hour=None):
