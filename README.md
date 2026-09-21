@@ -41,7 +41,7 @@ docker run -p 7860:7860 noise-monitor
 
 For Hugging Face Spaces, create a Docker Space and upload this repository; the front matter above declares Docker and port 7860. Render can use the Dockerfile with port 7860. Set `DB_PATH` to a persistent mounted path in production. Free-tier disks are often ephemeral, so the app automatically reseeds its demo history when empty.
 
-For Vercel, import the GitHub repository and use the included `vercel.json`. Set `SIM=0` and `AUTO_AGENT=0`: Vercel functions are request-driven, so background simulator and agent threads are not persistent there. SQLite storage is also ephemeral; use the deployed app for UI/API demonstration rather than long-term monitoring.
+For Vercel, import the GitHub repository and use the included `vercel.json`. The app automatically uses `/tmp/noise.db` and disables `SIM` and `AUTO_AGENT` when Vercel sets `VERCEL=1`. Vercel functions are request-driven, so background threads and SQLite storage are ephemeral; use the deployed app for UI/API demonstration rather than long-term monitoring.
 
 ## Environment variables
 

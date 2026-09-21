@@ -13,10 +13,11 @@ ZONES = {
     "Green Park": "Residential",
     "City Hospital": "Silence zone",
 }
-DB_PATH = os.getenv("DB_PATH", str(Path(__file__).with_name("noise.db")))
+ON_VERCEL = os.getenv("VERCEL") == "1"
+DB_PATH = os.getenv("DB_PATH", "/tmp/noise.db" if ON_VERCEL else str(Path(__file__).with_name("noise.db")))
 PORT = int(os.getenv("PORT", "7860"))
-SIM = os.getenv("SIM", "1") == "1"
-AUTO_AGENT = os.getenv("AUTO_AGENT", "1") == "1"
+SIM = os.getenv("SIM", "0" if ON_VERCEL else "1") == "1"
+AUTO_AGENT = os.getenv("AUTO_AGENT", "0" if ON_VERCEL else "1") == "1"
 AGENT_INTERVAL = int(os.getenv("AGENT_INTERVAL", "60"))
 CAL_OFFSET = float(os.getenv("CAL_OFFSET", "94"))
 
