@@ -41,7 +41,7 @@ docker run -p 7860:7860 noise-monitor
 
 For Hugging Face Spaces, create a Docker Space and upload this repository; the front matter above declares Docker and port 7860. Render can use the Dockerfile with port 7860. Set `DB_PATH` to a persistent mounted path in production. Free-tier disks are often ephemeral, so the app automatically reseeds its demo history when empty.
 
-For Vercel, import the GitHub repository and use the included `vercel.json`. The app automatically uses `/tmp/noise.db` and disables `SIM` and `AUTO_AGENT` when Vercel sets `VERCEL=1`. Vercel serves a lightweight API landing page at `/` with links to `/docs`, `/health`, and `/stats`; run locally or with Docker for the full Gradio dashboard. Vercel functions are request-driven, so background threads and SQLite storage are ephemeral.
+For Vercel, import the GitHub repository; Vercel automatically detects the FastAPI `app` instance in `app.py`. The app automatically uses `/tmp/noise.db` and disables `SIM` and `AUTO_AGENT` when Vercel sets `VERCEL=1`. Vercel serves a lightweight API landing page at `/` with links to `/docs`, `/health`, and `/stats`; run locally or with Docker for the full Gradio dashboard. Vercel functions are request-driven, so background threads and SQLite storage are ephemeral.
 
 ## Environment variables
 
