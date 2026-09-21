@@ -9,14 +9,23 @@ from fastapi.responses import HTMLResponse
 from config import PORT, SIM, AUTO_AGENT, AGENT_INTERVAL
 from config import ON_VERCEL
 from db import init_db
-from sim import seed, run
-from agent import run_agent
-from api import router
 
 os.environ.setdefault("MPLCONFIGDIR", os.path.join(tempfile.gettempdir(), "noise-monitor-mpl"))
+boot_error = None
+
+try:
+    from sim import seed, run
+    from agent import run_agent
+    from api import router
+except Exception as error:
+    if not ON_VERCEL: raise
+    boot_error = f"{type(error).__name__}: {error}"
 
 @asynccontextmanager
 async def life(application):
+    if boot_error:
+        yield
+        return
     init_db(); seed()
     if SIM: threading.Thread(target=run, daemon=True).start()
     if AUTO_AGENT:
@@ -26,12 +35,15 @@ async def life(application):
     yield
 
 app = FastAPI(title="Noise Pollution Monitoring", lifespan=life)
-init_db()
-app.include_router(router)
+if not boot_error:
+    init_db()
+    app.include_router(router)
 
 if ON_VERCEL:
     @app.get("/", response_class=HTMLResponse, include_in_schema=False)
     def home():
+        if boot_error:
+            return HTMLResponse(f"<h1>Deployment setup error</h1><pre>{boot_error}</pre>", status_code=500)
         return """<main style='font-family:system-ui;max-width:700px;margin:60px auto'>
         <h1>Automated Noise Pollution Monitoring</h1>
         <p>This serverless deployment exposes the monitoring API.</p>
