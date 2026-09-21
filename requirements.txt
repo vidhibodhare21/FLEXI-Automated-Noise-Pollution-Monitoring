@@ -6,3 +6,5 @@ requests==2.32.5
 
 # The hosted FastAPI deployment uses this lightweight dependency set.
 # Docker installs requirements-dashboard.txt for the full Gradio UI.
+
+uvicorn==0.39.0
