@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+.venv/
+noise.db
+noise.db-shm
+noise.db-wal
+.env
